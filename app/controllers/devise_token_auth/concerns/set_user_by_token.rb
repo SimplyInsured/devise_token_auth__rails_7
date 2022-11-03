@@ -25,7 +25,7 @@ module DeviseTokenAuth::Concerns::SetUserByToken
   # user auth
   def set_user_by_token(mapping = nil)
     # determine target authentication class
-    rc = resource_class(mapping)
+    rc = resource_class
 
     # no default user defined
     return unless rc
@@ -62,7 +62,7 @@ module DeviseTokenAuth::Concerns::SetUserByToken
     # check for an existing user, authenticated via warden/devise, if enabled
     if DeviseTokenAuth.enable_standard_devise_support
       devise_warden_user = warden.user(mapping)
-      if devise_warden_user && devise_warden_user.tokens[@token.client].nil?
+      if devise_warden_user # && devise_warden_user.tokens[@token.client].nil?
         @used_auth_by_token = false
         @resource = devise_warden_user
         # REVIEW: The following line _should_ be safe to remove;
